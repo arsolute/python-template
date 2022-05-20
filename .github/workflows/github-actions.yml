@@ -27,10 +27,9 @@ jobs:
         repository: arsolute/${{ env.DOCKER_IMAGE }}
         token: ${{ secrets.ARSOLUTE_TOKEN }}
 
-
   update_version_main:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
     steps:
     - name: Reseting Minor version
       uses: hmanzur/actions-set-secret@v2.0.0
@@ -67,7 +66,6 @@ jobs:
 
     - name: Push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
       run: docker push ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
-
 
   # helm_deploy_staging:
   #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
