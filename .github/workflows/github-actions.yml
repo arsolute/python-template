@@ -27,7 +27,6 @@ jobs:
         repository: arsolute/${{ env.DOCKER_IMAGE }}
         token: ${{ secrets.ARSOLUTE_TOKEN }}
 
-
   update_version_main:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
