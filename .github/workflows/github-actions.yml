@@ -40,9 +40,9 @@ jobs:
       with:
         context: app
         push: true
-        tags: ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:1.0.0
+        tags: ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}
         # labels: ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
-        labels: 1.0.0
+        labels: 1.0.1
 
   # upgrade_version:
   #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
