@@ -48,6 +48,7 @@ jobs:
         token: ${{ secrets.ARSOLUTE_TOKEN }}
 
   python_template:
+    needs: [update_version_staging, update_version_main]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
