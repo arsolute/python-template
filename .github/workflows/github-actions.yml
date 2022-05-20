@@ -30,7 +30,7 @@ jobs:
 
   update_version_main:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' and github.event.pull_request.merged == true
+    if: github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
     steps:
     - name: Reseting Minor version
       uses: hmanzur/actions-set-secret@v2.0.0
