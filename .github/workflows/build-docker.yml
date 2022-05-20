@@ -6,8 +6,8 @@ on:
     types:
       - completed
 
-# env:
-#   DOCKER_IMAGE: python-template
+env:
+  DOCKER_IMAGE: python-template
 
 jobs:
   python_template:
@@ -24,11 +24,11 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
 
-    - name: Build Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
-      run: docker build app  --tag ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
+    - name: Build Docker images for ${{ env.DOCKER_IMAGE }} ${{ secrets.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
+      run: docker build app  --tag ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ secrets.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
 
-    - name: Push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
-      run: docker push ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
+    - name: Push Docker images for ${{ env.DOCKER_IMAGE }} ${{ secrets.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
+      run: docker push ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ secrets.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
 
   # helm_deploy_staging:
   #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]

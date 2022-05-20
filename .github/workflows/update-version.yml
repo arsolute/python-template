@@ -8,9 +8,6 @@ on:
       - dev
 
 env:
-  RELEASE_VERSION : 1
-  # MAJOR_VERSION: ${{ secrets.MAJOR_VERSION }}
-  # MINOR_VERSION: ${{ secrets.MINOR_VERSION }}
   DOCKER_IMAGE: python-template
 
 jobs:
