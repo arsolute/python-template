@@ -13,23 +13,22 @@ ENV FT_APP_ENV="docker"
 
 RUN mkdir ${ROOT_DIR}/app -p
 
-RUN apt-get update \
-  && apt-get install -y curl  \
-  && apt-get clean \
-  && useradd -u 1000 -G sudo -U -m -s /bin/bash ${USER} \
-  && chown ${USER}:${GROUP} ${ROOT_DIR} 
+# RUN apt-get update \
+#   && apt-get install -y curl  \
+#   && apt-get clean
+
+RUN useradd -u 1000 -G sudo -U -m -s /bin/bash ${USER}
 
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+RUN chown ${USER}:${GROUP} ${ROOT_DIR} 
 
 COPY --chown=${USER}:${GROUP} . ${ROOT_DIR}/app
-
 
 WORKDIR ${ROOT_DIR}/app
 
 USER ${USER}
 RUN echo 'alias ll="ls -la"' >> ~/.bashrc
-
 
 RUN pip install -r requirements.txt
 
