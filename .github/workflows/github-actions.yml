@@ -5,6 +5,11 @@ on:
       - main
       - staging
 
+env:
+  RELEASE_VERSION : 1
+  MAJOR_VERSION: 0
+  DOCKER_IMAGE: python-template
+
 jobs:
   python_template:
     runs-on: ubuntu-latest
@@ -22,21 +27,21 @@ jobs:
     - name: Update Minor version
       uses: hmanzur/actions-set-secret@v2.0.0
       with:
-        name: 'MINOR'
-        value: $((${{ secrets.MINOR }}+1))
-        repository: arsolute/python-template
+        name: 'MINOR_VERSION'
+        value: $((${{ secrets.MINOR_VERSION }}+1))
+        repository: arsolute/${{ env.DOCKER_IMAGE }}
         token: ${{ secrets.ARSOLUTE_TOKEN }}
 
     - name: Current minor version
-      run: echo "${{ secrets.MINOR }}"
+      run: echo "${{ secrets.MINOR_VERSION }}"
 
-    - name: Build and push Docker images for python-template latest version
+    - name: Build and push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
       uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
       with:
         context: app
         push: true
-        tags: ${{ secrets.DOCKER_REGISTRY }}/arsolute/python-template
-        labels: 1.0.${{ secrets.MINOR }}
+        tags: ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}
+        labels: ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
 
   # upgrade_version:
   #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
