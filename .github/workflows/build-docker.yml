@@ -6,8 +6,8 @@ on:
     types:
       - completed
 
-# env:
-#   DOCKER_IMAGE: python-template
+env:
+  DOCKER_IMAGE: python-template
 
 jobs:
   python_template:
