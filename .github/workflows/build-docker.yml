@@ -1,54 +1,16 @@
-name: Build python image
-on:
-  push:
-    branches:
-      - main
-      - pre
-      - staging
-      - dev
+name: Build docker
 
-env:
-  RELEASE_VERSION : 1
-  # MAJOR_VERSION: ${{ secrets.MAJOR_VERSION }}
-  # MINOR_VERSION: ${{ secrets.MINOR_VERSION }}
-  DOCKER_IMAGE: python-template
+on:
+  workflow_run:
+    workflows: ["Update version"]
+    types:
+      - completed
+
+# env:
+#   DOCKER_IMAGE: python-template
 
 jobs:
-
-  update_version_staging:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'
-    steps:
-    - name: Update Minor version
-      uses: hmanzur/actions-set-secret@v2.0.0
-      with:
-        name: 'MINOR_VERSION'
-        value: $((${{ secrets.MINOR_VERSION }}+1))
-        repository: arsolute/${{ env.DOCKER_IMAGE }}
-        token: ${{ secrets.ARSOLUTE_TOKEN }}
-
-  update_version_main:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-    - name: Reseting Minor version
-      uses: hmanzur/actions-set-secret@v2.0.0
-      with:
-        name: 'MINOR_VERSION'
-        value: $((0))
-        repository: arsolute/${{ env.DOCKER_IMAGE }}
-        token: ${{ secrets.ARSOLUTE_TOKEN }}
-
-    - name: Update Major version
-      uses: hmanzur/actions-set-secret@v2.0.0
-      with:
-        name: 'MAJOR_VERSION'
-        value: $((${{ secrets.MAJOR_VERSION }}+1))
-        repository: arsolute/${{ env.DOCKER_IMAGE }}
-        token: ${{ secrets.ARSOLUTE_TOKEN }}
-
   python_template:
-    needs: [update_version_staging, update_version_main]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
