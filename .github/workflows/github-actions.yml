@@ -8,6 +8,7 @@ on:
 env:
   RELEASE_VERSION : 1
   MAJOR_VERSION: 0
+  MINOR_VERSION: ${{ secrets.MINOR_VERSION }}
   DOCKER_IMAGE: python-template
 
 jobs:
@@ -24,31 +25,31 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # - name: Build and push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
+    # - name: Build and push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }} version
     #   uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
     #   with:
     #     context: app
     #     push: true
-    #     tags: ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
-    #     # labels: ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
+    #     tags: ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}
+    #     # labels: ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}
     #     # labels: 1.0.1
 
-    - name: Build Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
+    - name: Build Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }} version
       run: docker build app  --tag ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
 
-    - name: Push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
-      run: docker push ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
+    - name: Push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }} version
+      run: docker push ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}
 
     - name: Update Minor version
       uses: hmanzur/actions-set-secret@v2.0.0
       with:
         name: 'MINOR_VERSION'
-        value: $((${{ secrets.MINOR_VERSION }}+1))
+        value: $((${{ env.MINOR_VERSION }}+1))
         repository: arsolute/${{ env.DOCKER_IMAGE }}
         token: ${{ secrets.ARSOLUTE_TOKEN }}
 
     - name: Current minor version
-      run: echo "${{ secrets.MINOR_VERSION }}"
+      run: echo "${{ env.MINOR_VERSION }}"
 
 
   # helm_deploy_staging:
