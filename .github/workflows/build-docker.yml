@@ -10,7 +10,7 @@ env:
   DOCKER_IMAGE: python-template
 
 jobs:
-  python_template:
+  docker_build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -23,7 +23,6 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-
     - name: Build Docker images for ${{ env.DOCKER_IMAGE }} ${{ secrets.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
       run: docker build app  --tag ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ secrets.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
 
@@ -31,7 +30,7 @@ jobs:
       run: docker push ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ secrets.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
 
   # helm_deploy_staging:
-  #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
+  #   needs: [docker_build]
   #   runs-on: ubuntu-latest
   #   if: github.ref == 'refs/heads/staging'
   #   steps:
@@ -45,7 +44,7 @@ jobs:
   #       kubeconfig: '${{ secrets.KUBECONFIG }}'
 
   # helm_deploy_prod:
-  #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
+  #   needs: [docker_build]
   #   runs-on: ubuntu-latest
   #   if: github.ref == 'refs/heads/main'
   #   steps:
@@ -57,21 +56,3 @@ jobs:
   #     with:
   #       exec: helm upgrade telegramcryptobot-prod-app ./helm/app -i -n telegramcryptobot-prod --recreate-pods
   #       kubeconfig: '${{ secrets.KUBECONFIG }}'
-
-  # upgrade_version:
-  #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
-  #   runs-on: ubuntu-latest
-  #   # if: github.ref == 'refs/heads/staging'
-  #   steps:
-  #   - name: Update Minor version
-  #     uses: hmanzur/actions-set-secret@v2.0.0
-  #     with:
-  #       name: 'MINOR'
-  #       value: $((${{ secrets.MINOR }}+1))
-  #       repository: xussof/telegramCryptoBot
-  #       token: ${{ secrets.REPO_ACCESS_TOKEN }}
-
-  #   - name: Current minor version
-  #     run: echo "${{ secrets.MINOR }}"
-
-
