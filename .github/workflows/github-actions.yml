@@ -69,9 +69,6 @@ jobs:
       run: docker push ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
 
 
-
-
-
   # helm_deploy_staging:
   #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
   #   runs-on: ubuntu-latest
