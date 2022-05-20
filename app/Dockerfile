@@ -14,7 +14,7 @@ ENV FT_APP_ENV="docker"
 RUN mkdir ${ROOT_DIR}/app -p
 
 RUN apt-get update \
-  && apt-get -y curl  \
+  && apt-get install -y curl  \
   && apt-get clean \
   && useradd -u 1000 -G sudo -U -m -s /bin/bash ${USER} \
   && chown ${USER}:${GROUP} ${ROOT_DIR} 
