@@ -24,6 +24,15 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Build and push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
+      uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      with:
+        context: app
+        push: true
+        tags: ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
+        # labels: ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
+        # labels: 1.0.1
+
     - name: Update Minor version
       uses: hmanzur/actions-set-secret@v2.0.0
       with:
@@ -34,15 +43,6 @@ jobs:
 
     - name: Current minor version
       run: echo "${{ secrets.MINOR_VERSION }}"
-
-    - name: Build and push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
-      uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-      with:
-        context: app
-        push: true
-        tags: ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:1.0.1
-        # labels: ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
-        # labels: 1.0.1
 
   # upgrade_version:
   #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
