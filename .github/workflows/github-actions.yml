@@ -33,7 +33,10 @@ jobs:
     #     # labels: ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
     #     # labels: 1.0.1
 
-    - name: Build and push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
+    - name: Build Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
+      run: docker build app  --tag ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
+
+    - name: Push Docker images for ${{ env.DOCKER_IMAGE }} ${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }} version
       run: docker push ${{ secrets.DOCKER_REGISTRY }}/arsolute/${{ env.DOCKER_IMAGE }}:${{ env.RELEASE_VERSION }}.${{ env.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
 
     - name: Update Minor version
