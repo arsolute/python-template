@@ -50,21 +50,6 @@ jobs:
     - name: Current minor version
       run: echo "${{ secrets.MINOR_VERSION }}"
 
-  # upgrade_version:
-  #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
-  #   runs-on: ubuntu-latest
-  #   # if: github.ref == 'refs/heads/staging'
-  #   steps:
-  #   - name: Update Minor version
-  #     uses: hmanzur/actions-set-secret@v2.0.0
-  #     with:
-  #       name: 'MINOR'
-  #       value: $((${{ secrets.MINOR }}+1))
-  #       repository: xussof/telegramCryptoBot
-  #       token: ${{ secrets.REPO_ACCESS_TOKEN }}
-
-  #   - name: Current minor version
-  # #     run: echo "${{ secrets.MINOR }}"
 
   # helm_deploy_staging:
   #   needs: [rabbitmq_producer, client_sync, client_updater, chatparser]
